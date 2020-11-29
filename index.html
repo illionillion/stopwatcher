@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ストップウォッチ</title>
+  <style>
+    *{
+      border: 1px solid red;
+      margin: 0;
+
+    }
+    body{
+      text-align: center;
+    }
+    #box{
+      width: 300px;
+      height: 150px;
+      margin: 0 auto;
+    }
+
+    button{
+      width: 60px;
+      height: 60px;
+      margin: 10px;
+      border-radius: 50%;
+      transition: 0.8s;
+    }
+    button:focus{
+      outline: 0;
+      
+    }
+    button:hover{
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="box">
+  <div id="timer">00:00:00</div>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="reset">reset</button>
+  </div>
+    <script>
+      const timer=document.getElementById("timer");
+      const start=document.getElementById("start");
+      const stop=document.getElementById("stop");
+      const reset=document.getElementById("reset");
+
+      function toHms(t) {
+        var hms = "";
+        var h = t / 3600 | 0;
+        var m = t % 3600 / 60 | 0;
+        var s = t % 60;
+
+        if (h != 0) {
+          hms = padZero(h) + ":" + padZero(m) + ":" + padZero(s);
+        } else if (m != 0) {
+          hms = "00:"+padZero(m) + ":" + padZero(s) ;
+        } else {
+          hms = "00:"+"00:"+padZero(s);
+        }
+
+        return hms;
+
+        function padZero(v) {
+          if (v < 10) {
+            return "0" + v;
+          } else {
+            return v;
+          }
+        }
+      }
+
+      function count(){
+
+        let on=sessionStorage.getItem("swich");
+
+        switch (on) {
+          case "on":
+
+
+          if(sessionStorage.hasOwnProperty('timer-count')) {
+            let count=sessionStorage.getItem('timer-count');
+            count=Number(count)+1;
+            sessionStorage.setItem('timer-count',count);
+            timer.innerHTML=toHms(count);
+          
+            console.log(toHms(count));
+          }else{
+            let count=0;
+            // count=count+1;
+            sessionStorage.setItem('timer-count',count);
+          }
+
+          // count=Number(count)+1;
+
+
+
+            break;
+        
+          default:
+            break;
+        }
+
+        
+
+      }
+
+      start.onclick=function start() {
+          
+          sessionStorage.setItem("swich","on");
+        
+      }
+
+      stop.onclick=function stop(){
+          sessionStorage.setItem("swich","");
+      }
+
+      reset.onclick=function reset(){
+          // sessionStorage.setItem("swich","");
+          timer.innerHTML="00:00:00";
+          sessionStorage.setItem('timer-count',0);
+      }
+
+
+      setInterval("count()",1000);
+
+      function count2(){
+        let count=timer.innerHTML;
+
+          count=Number(count)+1;
+
+          timer.innerHTML=count;
+          
+          console.log(count);
+      }
+
+      // setInterval("count2()",1000);
+    </script>
+</body>
+</html>
